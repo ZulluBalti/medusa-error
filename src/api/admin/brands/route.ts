@@ -1,10 +1,9 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http";
 import { createBrandWorkflow } from "../../../workflows/create-brand";
-import { z } from "zod"
+import { z } from "zod";
 import { PostAdminCreateBrand } from "./validators";
 
-
-type PostAdminCreateBrandType = z.infer<typeof PostAdminCreateBrand>
+type PostAdminCreateBrandType = z.infer<typeof PostAdminCreateBrand>;
 
 export const POST = async (
   req: MedusaRequest<PostAdminCreateBrandType>,
@@ -17,16 +16,19 @@ export const POST = async (
   res.json({ brand: result });
 };
 
-export const GET = async (
-  req: MedusaRequest,
-  res: MedusaResponse
-) => {
-  const query = req.scope.resolve("query")
-  
-  const { data: brands } = await query.graph({
-    entity: "brand",
-    fields: ["*", "products.*"],
-  })
+export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
+  const query = req.scope.resolve("query");
 
-  res.json({ brands })
-}
+  const { data: brands, metadata: { count, take, skip } = {} } =
+    await query.graph({
+      entity: "brand",
+      ...req.queryConfig,
+    });
+
+  res.json({
+    brands,
+    count,
+    limit: take,
+    offset: skip,
+  });
+};

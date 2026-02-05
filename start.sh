@@ -1,11 +1,8 @@
 #!/bin/sh
+set -e
 
-# Run migrations and start server
-echo "Running database migrations..."
-npx medusa db:migrate
+export HOST=0.0.0.0
+export PORT="${PORT:-9000}"
 
-echo "Seeding database..."
-yarn seed || echo "Seeding failed, continuing..."
-
-echo "Starting Medusa development server..."
-yarn dev
+echo "Starting Medusa server..."
+yarn start
