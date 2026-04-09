@@ -15,34 +15,23 @@ export default async function orderDeliveredHandler({
     const notificationService = container.resolve(Modules.NOTIFICATION)
     const query = container.resolve("query")
 
-    // Find the order linked to this fulfillment
-    const { data: fulfillmentLinks } = await query.graph({
-      entity: "order_fulfillment",
-      fields: ["order_id"],
-      filters: { fulfillment_id: fulfillmentId },
-    })
-
-    const orderId = fulfillmentLinks[0]?.order_id
-    if (!orderId) {
-      logger.warn(`No order found for fulfillment ${fulfillmentId}`)
-      return
-    }
-
-    const { data: orders } = await query.graph({
-      entity: "order",
+    const { data: fulfillments } = await query.graph({
+      entity: "fulfillment",
       fields: [
         "id",
-        "display_id",
-        "email",
-        "total",
-        "currency_code",
-        "customer.first_name",
-        "customer.last_name",
+        "order.id",
+        "order.display_id",
+        "order.email",
+        "order.total",
+        "order.currency_code",
+        "order.summary.*",
+        "order.customer.first_name",
+        "order.customer.last_name",
       ],
-      filters: { id: orderId },
+      filters: { id: fulfillmentId },
     })
 
-    const order = orders[0]
+    const order = fulfillments[0]?.order
     if (!order || !order.email) return
 
     const templateData = {
@@ -50,7 +39,7 @@ export default async function orderDeliveredHandler({
       customer_name:
         `${order.customer?.first_name ?? ""} ${order.customer?.last_name ?? ""}`.trim() ||
         "Customer",
-      total: formatAmount(order.total),
+      total: formatAmount(order.summary?.current_order_total ?? order.total),
       currency: order.currency_code?.toUpperCase(),
     }
 

@@ -5,50 +5,46 @@ import { resolveEmailTemplate } from "./utils/resolve-email-template"
 export default async function orderShipmentCreatedHandler({
   event: { data },
   container,
-}: SubscriberArgs<{ order_id: string; fulfillment_id: string; no_notification?: boolean }>) {
+}: SubscriberArgs<{ id: string; no_notification?: boolean }>) {
   if (data.no_notification) {
     return
   }
 
   const logger = container.resolve("logger")
-  logger.info(`Sending shipment notification for order: ${data.order_id}`)
+  logger.info(`Sending shipment notification for fulfillment: ${data.id}`)
 
   try {
     const notificationService = container.resolve(Modules.NOTIFICATION)
     const query = container.resolve("query")
 
-    const { data: orders } = await query.graph({
-      entity: "order",
+    const { data: fulfillments } = await query.graph({
+      entity: "fulfillment",
       fields: [
         "id",
-        "display_id",
-        "email",
-        "currency_code",
-        "customer.first_name",
-        "customer.last_name",
-        "fulfillments.id",
-        "fulfillments.labels.tracking_number",
-        "fulfillments.labels.tracking_url",
-        "shipping_address.address_1",
-        "shipping_address.city",
-        "shipping_address.country_code",
+        "labels.tracking_number",
+        "labels.tracking_url",
+        "order.id",
+        "order.display_id",
+        "order.email",
+        "order.currency_code",
+        "order.customer.first_name",
+        "order.customer.last_name",
       ],
-      filters: { id: data.order_id },
+      filters: { id: data.id },
     })
 
-    const order = orders[0]
+    const fulfillment = fulfillments[0]
+    if (!fulfillment) return
+
+    const order = fulfillment.order
     if (!order || !order.email) return
 
-    const fulfillment = (order.fulfillments ?? []).find(
-      (f: any) => f?.id === data.fulfillment_id
-    )
-    const trackingLinks = (fulfillment as any)?.labels ?? []
+    const trackingLinks = fulfillment.labels ?? []
 
     const templateData = {
       display_id: order.display_id,
       customer_name:
-        `${order.customer?.first_name ?? ""} ${order.customer?.last_name ?? ""}`.trim() ||
-        "Customer",
+        `${order.customer?.first_name ?? ""} ${order.customer?.last_name ?? ""}`.trim() || "Customer",
       tracking_links: trackingLinks,
       tracking_number: trackingLinks[0]?.tracking_number ?? "",
       tracking_url: trackingLinks[0]?.tracking_url ?? "",
@@ -65,11 +61,11 @@ export default async function orderShipmentCreatedHandler({
     logger.info(`Shipment email sent to ${order.email}`)
   } catch (error) {
     logger.error(
-      `Failed to send shipment email for order ${data.order_id}: ${error.message}`
+      `Failed to send shipment email for fulfillment ${data.id}: ${error.message}`
     )
   }
 }
 
 export const config: SubscriberConfig = {
-  event: "order.fulfillment_created",
+  event: "shipment.created",
 }

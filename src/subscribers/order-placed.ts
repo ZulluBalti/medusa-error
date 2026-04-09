@@ -22,11 +22,10 @@ export default async function orderPlacedHandler({
         "email",
         "total",
         "currency_code",
+        "summary.*",
         "customer.first_name",
         "customer.last_name",
-        "items.title",
-        "items.quantity",
-        "items.unit_price",
+        "items.*",
       ],
       filters: { id: data.id },
     })
@@ -47,7 +46,7 @@ export default async function orderPlacedHandler({
       display_id: order.display_id,
       customer_name: `${order.customer?.first_name ?? ""} ${order.customer?.last_name ?? ""}`.trim() || "Customer",
       items: order.items,
-      total: formatAmount(order.total),
+      total: formatAmount(order.summary?.current_order_total ?? order.total),
       currency: order.currency_code?.toUpperCase(),
     }
     const { template: emailTemplate, data: emailData } = await resolveEmailTemplate(container, "order-confirmation", templateData)

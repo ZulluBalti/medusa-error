@@ -19,54 +19,57 @@ import { sdk } from "../../lib/sdk"
 // Known templates with their display names and available variables
 const TEMPLATE_DEFINITIONS = [
   {
+    category: "Orders",
     key: "order-confirmation",
     name: "Order Confirmation",
     description: "Sent when a customer places an order",
     variables: ["customer_name", "display_id", "total", "currency"],
   },
   {
+    category: "Orders",
     key: "order-shipment",
     name: "Order Shipped",
-    description: "Sent when a fulfillment is created",
+    description: "Sent when a fulfillment is marked as shipped",
     variables: ["customer_name", "display_id", "tracking_number", "tracking_url"],
   },
   {
+    category: "Orders",
     key: "order-canceled",
     name: "Order Canceled",
     description: "Sent when an order is canceled",
     variables: ["customer_name", "display_id", "total", "currency"],
   },
   {
-    key: "order-completed",
-    name: "Order Completed",
-    description: "Sent when an order is manually marked complete",
-    variables: ["customer_name", "display_id", "total", "currency"],
-  },
-  {
+    category: "Orders",
     key: "order-delivered",
     name: "Order Delivered",
     description: "Sent when a fulfillment is marked as delivered",
     variables: ["customer_name", "display_id", "total", "currency"],
   },
   {
+    category: "Customer Account",
     key: "customer-welcome",
     name: "Customer Welcome",
     description: "Sent when a new customer registers",
     variables: ["first_name", "last_name", "full_name", "email", "phone", "customer_id"],
   },
   {
+    category: "Customer Account",
     key: "password-reset",
     name: "Password Reset",
     description: "Sent when a customer requests a password reset",
     variables: ["url"],
   },
   {
+    category: "Admin",
     key: "admin-invite",
     name: "Admin Invite",
     description: "Sent when an admin is invited",
     variables: ["url"],
   },
 ]
+
+const CATEGORIES = ["Orders", "Customer Account", "Admin"]
 
 type DbTemplate = {
   id: string
@@ -172,71 +175,85 @@ export default function EmailTemplatesPage() {
         </div>
       </div>
 
-      <Container className="p-0">
-        {isLoading ? (
-          <div className="flex items-center justify-center p-8">
+      {isLoading ? (
+        <Container className="p-8">
+          <div className="flex items-center justify-center">
             <Spinner />
           </div>
-        ) : (
-          <div className="divide-y divide-ui-border-base">
-            {TEMPLATE_DEFINITIONS.map((def) => {
-              const existing = dbTemplates.find((t) => t.template_key === def.key)
-              return (
-                <div
-                  key={def.key}
-                  className="flex items-center justify-between px-6 py-4"
-                >
-                  <div className="flex items-center gap-x-3">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-md bg-ui-bg-component">
-                      <EnvelopeSolid className="text-ui-fg-subtle" />
-                    </div>
-                    <div className="flex flex-col gap-y-0.5">
-                      <div className="flex items-center gap-x-2">
-                        <Text size="small" weight="plus" leading="compact">
-                          {def.name}
-                        </Text>
-                        {existing ? (
-                          <Badge size="2xsmall" color="green">
-                            Customized
-                          </Badge>
-                        ) : (
-                          <Badge size="2xsmall" color="grey">
-                            Default
-                          </Badge>
-                        )}
-                      </div>
-                      <Text size="small" className="text-ui-fg-subtle" leading="compact">
-                        {def.description}
-                      </Text>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-x-2">
-                    {existing && (
-                      <Button
-                        size="small"
-                        variant="secondary"
-                        onClick={() => deleteMutation.mutate(existing.id)}
-                        disabled={deleteMutation.isPending}
-                      >
-                        <Trash />
-                        Reset
-                      </Button>
-                    )}
-                    <Button
-                      size="small"
-                      variant="secondary"
-                      onClick={() => openEdit(def)}
-                    >
-                      <PencilSquare />
-                      Edit
-                    </Button>
-                  </div>
+        </Container>
+      ) : (
+        <div className="flex flex-col gap-y-4">
+          {CATEGORIES.map((category) => {
+            const defs = TEMPLATE_DEFINITIONS.filter((d) => d.category === category)
+            return (
+              <Container key={category} className="p-0">
+                <div className="border-b border-ui-border-base px-6 py-3">
+                  <Text size="small" weight="plus" className="text-ui-fg-subtle uppercase tracking-wide">
+                    {category}
+                  </Text>
                 </div>
-              )
-            })}
-          </div>
-        )}
-      </Container>
+                <div className="divide-y divide-ui-border-base">
+                  {defs.map((def) => {
+                    const existing = dbTemplates.find((t) => t.template_key === def.key)
+                    return (
+                      <div
+                        key={def.key}
+                        className="flex items-center justify-between px-6 py-4"
+                      >
+                        <div className="flex items-center gap-x-3">
+                          <div className="flex h-8 w-8 items-center justify-center rounded-md bg-ui-bg-component">
+                            <EnvelopeSolid className="text-ui-fg-subtle" />
+                          </div>
+                          <div className="flex flex-col gap-y-0.5">
+                            <div className="flex items-center gap-x-2">
+                              <Text size="small" weight="plus" leading="compact">
+                                {def.name}
+                              </Text>
+                              {existing ? (
+                                <Badge size="2xsmall" color="green">
+                                  Customized
+                                </Badge>
+                              ) : (
+                                <Badge size="2xsmall" color="grey">
+                                  Default
+                                </Badge>
+                              )}
+                            </div>
+                            <Text size="small" className="text-ui-fg-subtle" leading="compact">
+                              {def.description}
+                            </Text>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-x-2">
+                          {existing && (
+                            <Button
+                              size="small"
+                              variant="secondary"
+                              onClick={() => deleteMutation.mutate(existing.id)}
+                              disabled={deleteMutation.isPending}
+                            >
+                              <Trash />
+                              Reset
+                            </Button>
+                          )}
+                          <Button
+                            size="small"
+                            variant="secondary"
+                            onClick={() => openEdit(def)}
+                          >
+                            <PencilSquare />
+                            Edit
+                          </Button>
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              </Container>
+            )
+          })}
+        </div>
+      )}
 
       <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
         <Drawer.Content className="max-w-2xl">
