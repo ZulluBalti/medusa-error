@@ -1,49 +1,59 @@
-# syntax=docker/dockerfile:1
-
+# ---------- Base image ----------
 FROM node:20-alpine AS base
 WORKDIR /app
 
-# Install deps (cached)
-COPY package.json yarn.lock .yarnrc.yml ./
-RUN yarn install --frozen-lockfile
+# ---------- Development image ----------
+FROM base AS dev
+
+# Install dependencies
+COPY package.json yarn.lock ./
+RUN yarn install --ignore-engines
 
 # Copy source
 COPY . .
 
-# -------------------------
-# DEV target
-# -------------------------
-FROM base AS dev
-ENV NODE_ENV=development
+# Ensure start script is executable (used in docs)
+RUN chmod +x ./start.sh
+
+# Expose dev ports (API + Admin/Vite)
 EXPOSE 9000 5173
-# Change this if your repo uses a different dev script (e.g. start:dev, develop, etc.)
-CMD ["yarn", "dev"]
 
-# -------------------------
-# BUILD target
-# -------------------------
+# Default to development
+ENV NODE_ENV=development
+
+# Start: run migrations, seed, then dev server (per docs)
+CMD ["./start.sh"]
+
+# ---------- Production build image ----------
 FROM base AS build
-ENV NODE_ENV=production
-# Build Medusa bundle (creates .medusa/server + .medusa/admin)
-RUN yarn build
 
-# -------------------------
-# PROD runtime target
-# -------------------------
-FROM node:20-alpine AS prod
+# Install dependencies for building
+COPY package.json yarn.lock ./
+RUN yarn install --ignore-engines
+
+# Copy source
+COPY . .
+
+# Build Medusa production bundle -> .medusa/server
+RUN yarn medusa build
+
+# ---------- Production runtime image ----------
+FROM base AS prod
+
+# Copy built server
+COPY --from=build /app/.medusa/server /app
+
 WORKDIR /app
+
+# Install runtime deps inside .medusa/server
+RUN yarn install --ignore-engines
+
+# Expose production API port
+EXPOSE 9000
+
+# Production env
 ENV NODE_ENV=production
 
-# Copy only what production needs
-COPY --from=build /app/.medusa /app/.medusa
-COPY --from=build /app/package.json /app/package.json
-COPY --from=build /app/yarn.lock /app/yarn.lock
-COPY --from=build /app/.yarnrc.yml /app/.yarnrc.yml
-
-
-# Ensure runtime deps exist (safe even if redundant)
-RUN yarn install --frozen-lockfile --production=false || true
-
-WORKDIR /app/.medusa/server
-EXPOSE 9000
-CMD ["yarn", "start"]
+# Start command recommended in deployment docs:
+# run migrations (predeploy) then start
+CMD ["sh", "-c", "yarn predeploy && yarn run start"]

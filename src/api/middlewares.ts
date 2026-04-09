@@ -4,6 +4,12 @@ import {
   validateAndTransformQuery,
 } from "@medusajs/framework/http";
 import { PostAdminCreateBrand } from "./admin/brands/validators";
+import {
+  PostAdminUpsertEmailTemplate,
+  PostAdminUpdateEmailTemplate,
+} from "./admin/email-templates/validators";
+import { PostAdminCreateCollectionImage } from "./admin/collections/[id]/images/validators";
+import { PostAdminCreateCategoryImage } from "./admin/product-categories/[id]/images/validators";
 import { z } from "zod";
 import { createFindParams } from "@medusajs/medusa/api/utils/validators";
 import { PostAdminCreateMetaPixel } from "./admin/meta-pixels/validators";
@@ -14,6 +20,26 @@ export const GetSchema = createFindParams();
 
 export default defineMiddlewares({
   routes: [
+    {
+      matcher: "/admin/email-templates",
+      method: "POST",
+      middlewares: [validateAndTransformBody(PostAdminUpsertEmailTemplate)],
+    },
+    {
+      matcher: "/admin/email-templates/:id",
+      method: "POST",
+      middlewares: [validateAndTransformBody(PostAdminUpdateEmailTemplate)],
+    },
+    {
+      matcher: "/admin/collections/:id/images",
+      method: "POST",
+      middlewares: [validateAndTransformBody(PostAdminCreateCollectionImage)],
+    },
+    {
+      matcher: "/admin/product-categories/:id/images",
+      method: "POST",
+      middlewares: [validateAndTransformBody(PostAdminCreateCategoryImage)],
+    },
     {
       matcher: "/admin/brands",
       method: "GET",

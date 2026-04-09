@@ -378,19 +378,19 @@ export default async function seedDemoData({ container }: ExecArgs) {
     input: {
       product_categories: [
         {
-          name: "Shirts",
+          name: "Smartphones",
           is_active: true,
         },
         {
-          name: "Sweatshirts",
+          name: "Laptops",
           is_active: true,
         },
         {
-          name: "Pants",
+          name: "Tablets",
           is_active: true,
         },
         {
-          name: "Merch",
+          name: "Accessories",
           is_active: true,
         },
       ],
@@ -401,35 +401,604 @@ export default async function seedDemoData({ container }: ExecArgs) {
     input: {
       products: [
         {
-          title: "Medusa T-Shirt",
+          title: "Apple iPhone 13 Pro (Used)",
           category_ids: [
-            categoryResult.find((cat) => cat.name === "Shirts")!.id,
+            categoryResult.find((cat) => cat.name === "Smartphones")!.id,
           ],
           description:
-            "Reimagine the feeling of a classic T-shirt. With our cotton T-shirts, everyday essentials no longer have to be ordinary.",
-          handle: "t-shirt",
-          weight: 400,
+            "The iPhone 13 Pro features a Super Retina XDR display with ProMotion, a pro camera system with new Ultra Wide, Wide and Telephoto cameras, and the A15 Bionic chip. All units are inspected, tested, and cleaned. Battery health 85%+.",
+          handle: "iphone-13-pro-used",
+          weight: 204,
           status: ProductStatus.PUBLISHED,
           shipping_profile_id: shippingProfile.id,
           images: [
             {
-              url: "https://medusa-public-images.s3.eu-west-1.amazonaws.com/tee-black-front.png",
+              url: "https://images.unsplash.com/photo-1632661674596-df8be070a5c5?auto=format&fit=crop&w=800&q=80",
             },
             {
-              url: "https://medusa-public-images.s3.eu-west-1.amazonaws.com/tee-black-back.png",
-            },
-            {
-              url: "https://medusa-public-images.s3.eu-west-1.amazonaws.com/tee-white-front.png",
-            },
-            {
-              url: "https://medusa-public-images.s3.eu-west-1.amazonaws.com/tee-white-back.png",
+              url: "https://images.unsplash.com/photo-1591337676887-a217a6970a8a?auto=format&fit=crop&w=800&q=80",
             },
           ],
           options: [
             {
-              title: "Size",
-              values: ["S", "M", "L", "XL"],
+              title: "Storage",
+              values: ["128GB", "256GB", "512GB"],
             },
+            {
+              title: "Condition",
+              values: ["Good", "Excellent"],
+            },
+          ],
+          variants: [
+            {
+              title: "128GB / Good",
+              sku: "IP13PRO-128-GOOD",
+              options: { Storage: "128GB", Condition: "Good" },
+              prices: [
+                { amount: 499, currency_code: "eur" },
+                { amount: 549, currency_code: "usd" },
+              ],
+            },
+            {
+              title: "128GB / Excellent",
+              sku: "IP13PRO-128-EXC",
+              options: { Storage: "128GB", Condition: "Excellent" },
+              prices: [
+                { amount: 599, currency_code: "eur" },
+                { amount: 649, currency_code: "usd" },
+              ],
+            },
+            {
+              title: "256GB / Good",
+              sku: "IP13PRO-256-GOOD",
+              options: { Storage: "256GB", Condition: "Good" },
+              prices: [
+                { amount: 549, currency_code: "eur" },
+                { amount: 599, currency_code: "usd" },
+              ],
+            },
+            {
+              title: "256GB / Excellent",
+              sku: "IP13PRO-256-EXC",
+              options: { Storage: "256GB", Condition: "Excellent" },
+              prices: [
+                { amount: 649, currency_code: "eur" },
+                { amount: 699, currency_code: "usd" },
+              ],
+            },
+            {
+              title: "512GB / Good",
+              sku: "IP13PRO-512-GOOD",
+              options: { Storage: "512GB", Condition: "Good" },
+              prices: [
+                { amount: 599, currency_code: "eur" },
+                { amount: 649, currency_code: "usd" },
+              ],
+            },
+            {
+              title: "512GB / Excellent",
+              sku: "IP13PRO-512-EXC",
+              options: { Storage: "512GB", Condition: "Excellent" },
+              prices: [
+                { amount: 699, currency_code: "eur" },
+                { amount: 749, currency_code: "usd" },
+              ],
+            },
+          ],
+          sales_channels: [{ id: defaultSalesChannel[0].id }],
+        },
+        {
+          title: "Samsung Galaxy S22 (Used)",
+          category_ids: [
+            categoryResult.find((cat) => cat.name === "Smartphones")!.id,
+          ],
+          description:
+            "The Samsung Galaxy S22 packs a pro-grade camera with Nightography, a powerful Snapdragon 8 Gen 1 processor, and an all-day battery. Each device is fully tested and reset to factory settings. Battery health 85%+.",
+          handle: "samsung-galaxy-s22-used",
+          weight: 167,
+          status: ProductStatus.PUBLISHED,
+          shipping_profile_id: shippingProfile.id,
+          images: [
+            {
+              url: "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?auto=format&fit=crop&w=800&q=80",
+            },
+            {
+              url: "https://images.unsplash.com/photo-1546027658-7aa750153465?auto=format&fit=crop&w=800&q=80",
+            },
+          ],
+          options: [
+            {
+              title: "Storage",
+              values: ["128GB", "256GB"],
+            },
+            {
+              title: "Condition",
+              values: ["Good", "Excellent"],
+            },
+          ],
+          variants: [
+            {
+              title: "128GB / Good",
+              sku: "S22-128-GOOD",
+              options: { Storage: "128GB", Condition: "Good" },
+              prices: [
+                { amount: 349, currency_code: "eur" },
+                { amount: 379, currency_code: "usd" },
+              ],
+            },
+            {
+              title: "128GB / Excellent",
+              sku: "S22-128-EXC",
+              options: { Storage: "128GB", Condition: "Excellent" },
+              prices: [
+                { amount: 429, currency_code: "eur" },
+                { amount: 469, currency_code: "usd" },
+              ],
+            },
+            {
+              title: "256GB / Good",
+              sku: "S22-256-GOOD",
+              options: { Storage: "256GB", Condition: "Good" },
+              prices: [
+                { amount: 399, currency_code: "eur" },
+                { amount: 429, currency_code: "usd" },
+              ],
+            },
+            {
+              title: "256GB / Excellent",
+              sku: "S22-256-EXC",
+              options: { Storage: "256GB", Condition: "Excellent" },
+              prices: [
+                { amount: 479, currency_code: "eur" },
+                { amount: 519, currency_code: "usd" },
+              ],
+            },
+          ],
+          sales_channels: [{ id: defaultSalesChannel[0].id }],
+        },
+        {
+          title: "Apple iPhone 12 (Used)",
+          category_ids: [
+            categoryResult.find((cat) => cat.name === "Smartphones")!.id,
+          ],
+          description:
+            "The iPhone 12 features a 6.1-inch Super Retina XDR display, 5G capability, and the A14 Bionic chip. A great value option in excellent working condition. Battery health 80%+.",
+          handle: "iphone-12-used",
+          weight: 164,
+          status: ProductStatus.PUBLISHED,
+          shipping_profile_id: shippingProfile.id,
+          images: [
+            {
+              url: "https://images.unsplash.com/photo-1605236453806-6ff36851218e?auto=format&fit=crop&w=800&q=80",
+            },
+          ],
+          options: [
+            {
+              title: "Storage",
+              values: ["64GB", "128GB", "256GB"],
+            },
+            {
+              title: "Condition",
+              values: ["Good", "Excellent"],
+            },
+          ],
+          variants: [
+            {
+              title: "64GB / Good",
+              sku: "IP12-64-GOOD",
+              options: { Storage: "64GB", Condition: "Good" },
+              prices: [
+                { amount: 279, currency_code: "eur" },
+                { amount: 309, currency_code: "usd" },
+              ],
+            },
+            {
+              title: "64GB / Excellent",
+              sku: "IP12-64-EXC",
+              options: { Storage: "64GB", Condition: "Excellent" },
+              prices: [
+                { amount: 329, currency_code: "eur" },
+                { amount: 359, currency_code: "usd" },
+              ],
+            },
+            {
+              title: "128GB / Good",
+              sku: "IP12-128-GOOD",
+              options: { Storage: "128GB", Condition: "Good" },
+              prices: [
+                { amount: 319, currency_code: "eur" },
+                { amount: 349, currency_code: "usd" },
+              ],
+            },
+            {
+              title: "128GB / Excellent",
+              sku: "IP12-128-EXC",
+              options: { Storage: "128GB", Condition: "Excellent" },
+              prices: [
+                { amount: 369, currency_code: "eur" },
+                { amount: 399, currency_code: "usd" },
+              ],
+            },
+            {
+              title: "256GB / Good",
+              sku: "IP12-256-GOOD",
+              options: { Storage: "256GB", Condition: "Good" },
+              prices: [
+                { amount: 359, currency_code: "eur" },
+                { amount: 389, currency_code: "usd" },
+              ],
+            },
+            {
+              title: "256GB / Excellent",
+              sku: "IP12-256-EXC",
+              options: { Storage: "256GB", Condition: "Excellent" },
+              prices: [
+                { amount: 409, currency_code: "eur" },
+                { amount: 449, currency_code: "usd" },
+              ],
+            },
+          ],
+          sales_channels: [{ id: defaultSalesChannel[0].id }],
+        },
+        {
+          title: "Apple MacBook Pro 14\" M1 Pro (Used)",
+          category_ids: [
+            categoryResult.find((cat) => cat.name === "Laptops")!.id,
+          ],
+          description:
+            "The MacBook Pro 14\" with M1 Pro chip delivers extraordinary performance with a stunning Liquid Retina XDR display. Fully tested with all ports working. Comes with original charger. Minor cosmetic wear only.",
+          handle: "macbook-pro-14-m1-pro-used",
+          weight: 1600,
+          status: ProductStatus.PUBLISHED,
+          shipping_profile_id: shippingProfile.id,
+          images: [
+            {
+              url: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80",
+            },
+            {
+              url: "https://images.unsplash.com/photo-1611186871525-9e4c5b5b7b3e?auto=format&fit=crop&w=800&q=80",
+            },
+          ],
+          options: [
+            {
+              title: "Configuration",
+              values: ["16GB RAM / 512GB SSD", "16GB RAM / 1TB SSD", "32GB RAM / 1TB SSD"],
+            },
+            {
+              title: "Condition",
+              values: ["Good", "Excellent"],
+            },
+          ],
+          variants: [
+            {
+              title: "16GB / 512GB / Good",
+              sku: "MBP14-16-512-GOOD",
+              options: { Configuration: "16GB RAM / 512GB SSD", Condition: "Good" },
+              prices: [
+                { amount: 999, currency_code: "eur" },
+                { amount: 1099, currency_code: "usd" },
+              ],
+            },
+            {
+              title: "16GB / 512GB / Excellent",
+              sku: "MBP14-16-512-EXC",
+              options: { Configuration: "16GB RAM / 512GB SSD", Condition: "Excellent" },
+              prices: [
+                { amount: 1199, currency_code: "eur" },
+                { amount: 1299, currency_code: "usd" },
+              ],
+            },
+            {
+              title: "16GB / 1TB / Good",
+              sku: "MBP14-16-1T-GOOD",
+              options: { Configuration: "16GB RAM / 1TB SSD", Condition: "Good" },
+              prices: [
+                { amount: 1149, currency_code: "eur" },
+                { amount: 1249, currency_code: "usd" },
+              ],
+            },
+            {
+              title: "16GB / 1TB / Excellent",
+              sku: "MBP14-16-1T-EXC",
+              options: { Configuration: "16GB RAM / 1TB SSD", Condition: "Excellent" },
+              prices: [
+                { amount: 1349, currency_code: "eur" },
+                { amount: 1449, currency_code: "usd" },
+              ],
+            },
+            {
+              title: "32GB / 1TB / Good",
+              sku: "MBP14-32-1T-GOOD",
+              options: { Configuration: "32GB RAM / 1TB SSD", Condition: "Good" },
+              prices: [
+                { amount: 1499, currency_code: "eur" },
+                { amount: 1599, currency_code: "usd" },
+              ],
+            },
+            {
+              title: "32GB / 1TB / Excellent",
+              sku: "MBP14-32-1T-EXC",
+              options: { Configuration: "32GB RAM / 1TB SSD", Condition: "Excellent" },
+              prices: [
+                { amount: 1699, currency_code: "eur" },
+                { amount: 1849, currency_code: "usd" },
+              ],
+            },
+          ],
+          sales_channels: [{ id: defaultSalesChannel[0].id }],
+        },
+        {
+          title: "Dell XPS 13 (Used)",
+          category_ids: [
+            categoryResult.find((cat) => cat.name === "Laptops")!.id,
+          ],
+          description:
+            "The Dell XPS 13 is a compact powerhouse featuring a stunning InfinityEdge display, Intel Core i5/i7 processor, and all-day battery life. Each unit is data-wiped, tested, and comes with a power adapter.",
+          handle: "dell-xps-13-used",
+          weight: 1200,
+          status: ProductStatus.PUBLISHED,
+          shipping_profile_id: shippingProfile.id,
+          images: [
+            {
+              url: "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=800&q=80",
+            },
+            {
+              url: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=800&q=80",
+            },
+          ],
+          options: [
+            {
+              title: "Configuration",
+              values: ["i5 / 8GB / 256GB", "i5 / 16GB / 512GB", "i7 / 16GB / 512GB"],
+            },
+            {
+              title: "Condition",
+              values: ["Good", "Excellent"],
+            },
+          ],
+          variants: [
+            {
+              title: "i5 / 8GB / 256GB / Good",
+              sku: "XPS13-I5-8-256-GOOD",
+              options: { Configuration: "i5 / 8GB / 256GB", Condition: "Good" },
+              prices: [
+                { amount: 449, currency_code: "eur" },
+                { amount: 499, currency_code: "usd" },
+              ],
+            },
+            {
+              title: "i5 / 8GB / 256GB / Excellent",
+              sku: "XPS13-I5-8-256-EXC",
+              options: { Configuration: "i5 / 8GB / 256GB", Condition: "Excellent" },
+              prices: [
+                { amount: 549, currency_code: "eur" },
+                { amount: 599, currency_code: "usd" },
+              ],
+            },
+            {
+              title: "i5 / 16GB / 512GB / Good",
+              sku: "XPS13-I5-16-512-GOOD",
+              options: { Configuration: "i5 / 16GB / 512GB", Condition: "Good" },
+              prices: [
+                { amount: 599, currency_code: "eur" },
+                { amount: 649, currency_code: "usd" },
+              ],
+            },
+            {
+              title: "i5 / 16GB / 512GB / Excellent",
+              sku: "XPS13-I5-16-512-EXC",
+              options: { Configuration: "i5 / 16GB / 512GB", Condition: "Excellent" },
+              prices: [
+                { amount: 699, currency_code: "eur" },
+                { amount: 749, currency_code: "usd" },
+              ],
+            },
+            {
+              title: "i7 / 16GB / 512GB / Good",
+              sku: "XPS13-I7-16-512-GOOD",
+              options: { Configuration: "i7 / 16GB / 512GB", Condition: "Good" },
+              prices: [
+                { amount: 699, currency_code: "eur" },
+                { amount: 769, currency_code: "usd" },
+              ],
+            },
+            {
+              title: "i7 / 16GB / 512GB / Excellent",
+              sku: "XPS13-I7-16-512-EXC",
+              options: { Configuration: "i7 / 16GB / 512GB", Condition: "Excellent" },
+              prices: [
+                { amount: 849, currency_code: "eur" },
+                { amount: 929, currency_code: "usd" },
+              ],
+            },
+          ],
+          sales_channels: [{ id: defaultSalesChannel[0].id }],
+        },
+        {
+          title: "Lenovo ThinkPad X1 Carbon (Used)",
+          category_ids: [
+            categoryResult.find((cat) => cat.name === "Laptops")!.id,
+          ],
+          description:
+            "The ThinkPad X1 Carbon is the ultimate business ultrabook — incredibly light, durable, and powerful. Intel Core i7, military-grade durability, and an exceptional keyboard. Data wiped, fully tested, includes charger.",
+          handle: "lenovo-thinkpad-x1-carbon-used",
+          weight: 1130,
+          status: ProductStatus.PUBLISHED,
+          shipping_profile_id: shippingProfile.id,
+          images: [
+            {
+              url: "https://images.unsplash.com/photo-1484788984921-03950022c9ef?auto=format&fit=crop&w=800&q=80",
+            },
+          ],
+          options: [
+            {
+              title: "Configuration",
+              values: ["i5 / 8GB / 256GB", "i7 / 16GB / 512GB", "i7 / 32GB / 1TB"],
+            },
+            {
+              title: "Condition",
+              values: ["Good", "Excellent"],
+            },
+          ],
+          variants: [
+            {
+              title: "i5 / 8GB / 256GB / Good",
+              sku: "X1C-I5-8-256-GOOD",
+              options: { Configuration: "i5 / 8GB / 256GB", Condition: "Good" },
+              prices: [
+                { amount: 499, currency_code: "eur" },
+                { amount: 549, currency_code: "usd" },
+              ],
+            },
+            {
+              title: "i5 / 8GB / 256GB / Excellent",
+              sku: "X1C-I5-8-256-EXC",
+              options: { Configuration: "i5 / 8GB / 256GB", Condition: "Excellent" },
+              prices: [
+                { amount: 599, currency_code: "eur" },
+                { amount: 649, currency_code: "usd" },
+              ],
+            },
+            {
+              title: "i7 / 16GB / 512GB / Good",
+              sku: "X1C-I7-16-512-GOOD",
+              options: { Configuration: "i7 / 16GB / 512GB", Condition: "Good" },
+              prices: [
+                { amount: 749, currency_code: "eur" },
+                { amount: 819, currency_code: "usd" },
+              ],
+            },
+            {
+              title: "i7 / 16GB / 512GB / Excellent",
+              sku: "X1C-I7-16-512-EXC",
+              options: { Configuration: "i7 / 16GB / 512GB", Condition: "Excellent" },
+              prices: [
+                { amount: 899, currency_code: "eur" },
+                { amount: 979, currency_code: "usd" },
+              ],
+            },
+            {
+              title: "i7 / 32GB / 1TB / Good",
+              sku: "X1C-I7-32-1T-GOOD",
+              options: { Configuration: "i7 / 32GB / 1TB", Condition: "Good" },
+              prices: [
+                { amount: 999, currency_code: "eur" },
+                { amount: 1099, currency_code: "usd" },
+              ],
+            },
+            {
+              title: "i7 / 32GB / 1TB / Excellent",
+              sku: "X1C-I7-32-1T-EXC",
+              options: { Configuration: "i7 / 32GB / 1TB", Condition: "Excellent" },
+              prices: [
+                { amount: 1149, currency_code: "eur" },
+                { amount: 1249, currency_code: "usd" },
+              ],
+            },
+          ],
+          sales_channels: [{ id: defaultSalesChannel[0].id }],
+        },
+        {
+          title: "Apple iPad Pro 11\" (Used)",
+          category_ids: [
+            categoryResult.find((cat) => cat.name === "Tablets")!.id,
+          ],
+          description:
+            "The iPad Pro 11\" with M1 chip features a Liquid Retina display, Thunderbolt connectivity, and all-day battery life. Compatible with Apple Pencil 2 and Magic Keyboard. Battery health 85%+.",
+          handle: "ipad-pro-11-used",
+          weight: 466,
+          status: ProductStatus.PUBLISHED,
+          shipping_profile_id: shippingProfile.id,
+          images: [
+            {
+              url: "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&w=800&q=80",
+            },
+          ],
+          options: [
+            {
+              title: "Storage",
+              values: ["128GB", "256GB", "512GB"],
+            },
+            {
+              title: "Condition",
+              values: ["Good", "Excellent"],
+            },
+          ],
+          variants: [
+            {
+              title: "128GB / Good",
+              sku: "IPADPRO11-128-GOOD",
+              options: { Storage: "128GB", Condition: "Good" },
+              prices: [
+                { amount: 449, currency_code: "eur" },
+                { amount: 499, currency_code: "usd" },
+              ],
+            },
+            {
+              title: "128GB / Excellent",
+              sku: "IPADPRO11-128-EXC",
+              options: { Storage: "128GB", Condition: "Excellent" },
+              prices: [
+                { amount: 549, currency_code: "eur" },
+                { amount: 599, currency_code: "usd" },
+              ],
+            },
+            {
+              title: "256GB / Good",
+              sku: "IPADPRO11-256-GOOD",
+              options: { Storage: "256GB", Condition: "Good" },
+              prices: [
+                { amount: 499, currency_code: "eur" },
+                { amount: 549, currency_code: "usd" },
+              ],
+            },
+            {
+              title: "256GB / Excellent",
+              sku: "IPADPRO11-256-EXC",
+              options: { Storage: "256GB", Condition: "Excellent" },
+              prices: [
+                { amount: 599, currency_code: "eur" },
+                { amount: 649, currency_code: "usd" },
+              ],
+            },
+            {
+              title: "512GB / Good",
+              sku: "IPADPRO11-512-GOOD",
+              options: { Storage: "512GB", Condition: "Good" },
+              prices: [
+                { amount: 599, currency_code: "eur" },
+                { amount: 649, currency_code: "usd" },
+              ],
+            },
+            {
+              title: "512GB / Excellent",
+              sku: "IPADPRO11-512-EXC",
+              options: { Storage: "512GB", Condition: "Excellent" },
+              prices: [
+                { amount: 699, currency_code: "eur" },
+                { amount: 769, currency_code: "usd" },
+              ],
+            },
+          ],
+          sales_channels: [{ id: defaultSalesChannel[0].id }],
+        },
+        {
+          title: "USB-C Charging Cable (1m)",
+          category_ids: [
+            categoryResult.find((cat) => cat.name === "Accessories")!.id,
+          ],
+          description:
+            "High-quality braided USB-C cable compatible with all USB-C devices including MacBooks, Android phones, and iPads. Supports fast charging up to 100W and data transfer up to 480Mbps.",
+          handle: "usb-c-cable-1m",
+          weight: 60,
+          status: ProductStatus.PUBLISHED,
+          shipping_profile_id: shippingProfile.id,
+          images: [
+            {
+              url: "https://images.unsplash.com/photo-1583394838336-acd977736f90?auto=format&fit=crop&w=800&q=80",
+            },
+          ],
+          options: [
             {
               title: "Color",
               values: ["Black", "White"],
@@ -437,458 +1006,25 @@ export default async function seedDemoData({ container }: ExecArgs) {
           ],
           variants: [
             {
-              title: "S / Black",
-              sku: "SHIRT-S-BLACK",
-              options: {
-                Size: "S",
-                Color: "Black",
-              },
+              title: "Black",
+              sku: "USBC-CABLE-1M-BLACK",
+              options: { Color: "Black" },
               prices: [
-                {
-                  amount: 10,
-                  currency_code: "eur",
-                },
-                {
-                  amount: 15,
-                  currency_code: "usd",
-                },
+                { amount: 12, currency_code: "eur" },
+                { amount: 14, currency_code: "usd" },
               ],
             },
             {
-              title: "S / White",
-              sku: "SHIRT-S-WHITE",
-              options: {
-                Size: "S",
-                Color: "White",
-              },
+              title: "White",
+              sku: "USBC-CABLE-1M-WHITE",
+              options: { Color: "White" },
               prices: [
-                {
-                  amount: 10,
-                  currency_code: "eur",
-                },
-                {
-                  amount: 15,
-                  currency_code: "usd",
-                },
-              ],
-            },
-            {
-              title: "M / Black",
-              sku: "SHIRT-M-BLACK",
-              options: {
-                Size: "M",
-                Color: "Black",
-              },
-              prices: [
-                {
-                  amount: 10,
-                  currency_code: "eur",
-                },
-                {
-                  amount: 15,
-                  currency_code: "usd",
-                },
-              ],
-            },
-            {
-              title: "M / White",
-              sku: "SHIRT-M-WHITE",
-              options: {
-                Size: "M",
-                Color: "White",
-              },
-              prices: [
-                {
-                  amount: 10,
-                  currency_code: "eur",
-                },
-                {
-                  amount: 15,
-                  currency_code: "usd",
-                },
-              ],
-            },
-            {
-              title: "L / Black",
-              sku: "SHIRT-L-BLACK",
-              options: {
-                Size: "L",
-                Color: "Black",
-              },
-              prices: [
-                {
-                  amount: 10,
-                  currency_code: "eur",
-                },
-                {
-                  amount: 15,
-                  currency_code: "usd",
-                },
-              ],
-            },
-            {
-              title: "L / White",
-              sku: "SHIRT-L-WHITE",
-              options: {
-                Size: "L",
-                Color: "White",
-              },
-              prices: [
-                {
-                  amount: 10,
-                  currency_code: "eur",
-                },
-                {
-                  amount: 15,
-                  currency_code: "usd",
-                },
-              ],
-            },
-            {
-              title: "XL / Black",
-              sku: "SHIRT-XL-BLACK",
-              options: {
-                Size: "XL",
-                Color: "Black",
-              },
-              prices: [
-                {
-                  amount: 10,
-                  currency_code: "eur",
-                },
-                {
-                  amount: 15,
-                  currency_code: "usd",
-                },
-              ],
-            },
-            {
-              title: "XL / White",
-              sku: "SHIRT-XL-WHITE",
-              options: {
-                Size: "XL",
-                Color: "White",
-              },
-              prices: [
-                {
-                  amount: 10,
-                  currency_code: "eur",
-                },
-                {
-                  amount: 15,
-                  currency_code: "usd",
-                },
+                { amount: 12, currency_code: "eur" },
+                { amount: 14, currency_code: "usd" },
               ],
             },
           ],
-          sales_channels: [
-            {
-              id: defaultSalesChannel[0].id,
-            },
-          ],
-        },
-        {
-          title: "Medusa Sweatshirt",
-          category_ids: [
-            categoryResult.find((cat) => cat.name === "Sweatshirts")!.id,
-          ],
-          description:
-            "Reimagine the feeling of a classic sweatshirt. With our cotton sweatshirt, everyday essentials no longer have to be ordinary.",
-          handle: "sweatshirt",
-          weight: 400,
-          status: ProductStatus.PUBLISHED,
-          shipping_profile_id: shippingProfile.id,
-          images: [
-            {
-              url: "https://medusa-public-images.s3.eu-west-1.amazonaws.com/sweatshirt-vintage-front.png",
-            },
-            {
-              url: "https://medusa-public-images.s3.eu-west-1.amazonaws.com/sweatshirt-vintage-back.png",
-            },
-          ],
-          options: [
-            {
-              title: "Size",
-              values: ["S", "M", "L", "XL"],
-            },
-          ],
-          variants: [
-            {
-              title: "S",
-              sku: "SWEATSHIRT-S",
-              options: {
-                Size: "S",
-              },
-              prices: [
-                {
-                  amount: 10,
-                  currency_code: "eur",
-                },
-                {
-                  amount: 15,
-                  currency_code: "usd",
-                },
-              ],
-            },
-            {
-              title: "M",
-              sku: "SWEATSHIRT-M",
-              options: {
-                Size: "M",
-              },
-              prices: [
-                {
-                  amount: 10,
-                  currency_code: "eur",
-                },
-                {
-                  amount: 15,
-                  currency_code: "usd",
-                },
-              ],
-            },
-            {
-              title: "L",
-              sku: "SWEATSHIRT-L",
-              options: {
-                Size: "L",
-              },
-              prices: [
-                {
-                  amount: 10,
-                  currency_code: "eur",
-                },
-                {
-                  amount: 15,
-                  currency_code: "usd",
-                },
-              ],
-            },
-            {
-              title: "XL",
-              sku: "SWEATSHIRT-XL",
-              options: {
-                Size: "XL",
-              },
-              prices: [
-                {
-                  amount: 10,
-                  currency_code: "eur",
-                },
-                {
-                  amount: 15,
-                  currency_code: "usd",
-                },
-              ],
-            },
-          ],
-          sales_channels: [
-            {
-              id: defaultSalesChannel[0].id,
-            },
-          ],
-        },
-        {
-          title: "Medusa Sweatpants",
-          category_ids: [
-            categoryResult.find((cat) => cat.name === "Pants")!.id,
-          ],
-          description:
-            "Reimagine the feeling of classic sweatpants. With our cotton sweatpants, everyday essentials no longer have to be ordinary.",
-          handle: "sweatpants",
-          weight: 400,
-          status: ProductStatus.PUBLISHED,
-          shipping_profile_id: shippingProfile.id,
-          images: [
-            {
-              url: "https://medusa-public-images.s3.eu-west-1.amazonaws.com/sweatpants-gray-front.png",
-            },
-            {
-              url: "https://medusa-public-images.s3.eu-west-1.amazonaws.com/sweatpants-gray-back.png",
-            },
-          ],
-          options: [
-            {
-              title: "Size",
-              values: ["S", "M", "L", "XL"],
-            },
-          ],
-          variants: [
-            {
-              title: "S",
-              sku: "SWEATPANTS-S",
-              options: {
-                Size: "S",
-              },
-              prices: [
-                {
-                  amount: 10,
-                  currency_code: "eur",
-                },
-                {
-                  amount: 15,
-                  currency_code: "usd",
-                },
-              ],
-            },
-            {
-              title: "M",
-              sku: "SWEATPANTS-M",
-              options: {
-                Size: "M",
-              },
-              prices: [
-                {
-                  amount: 10,
-                  currency_code: "eur",
-                },
-                {
-                  amount: 15,
-                  currency_code: "usd",
-                },
-              ],
-            },
-            {
-              title: "L",
-              sku: "SWEATPANTS-L",
-              options: {
-                Size: "L",
-              },
-              prices: [
-                {
-                  amount: 10,
-                  currency_code: "eur",
-                },
-                {
-                  amount: 15,
-                  currency_code: "usd",
-                },
-              ],
-            },
-            {
-              title: "XL",
-              sku: "SWEATPANTS-XL",
-              options: {
-                Size: "XL",
-              },
-              prices: [
-                {
-                  amount: 10,
-                  currency_code: "eur",
-                },
-                {
-                  amount: 15,
-                  currency_code: "usd",
-                },
-              ],
-            },
-          ],
-          sales_channels: [
-            {
-              id: defaultSalesChannel[0].id,
-            },
-          ],
-        },
-        {
-          title: "Medusa Shorts",
-          category_ids: [
-            categoryResult.find((cat) => cat.name === "Merch")!.id,
-          ],
-          description:
-            "Reimagine the feeling of classic shorts. With our cotton shorts, everyday essentials no longer have to be ordinary.",
-          handle: "shorts",
-          weight: 400,
-          status: ProductStatus.PUBLISHED,
-          shipping_profile_id: shippingProfile.id,
-          images: [
-            {
-              url: "https://medusa-public-images.s3.eu-west-1.amazonaws.com/shorts-vintage-front.png",
-            },
-            {
-              url: "https://medusa-public-images.s3.eu-west-1.amazonaws.com/shorts-vintage-back.png",
-            },
-          ],
-          options: [
-            {
-              title: "Size",
-              values: ["S", "M", "L", "XL"],
-            },
-          ],
-          variants: [
-            {
-              title: "S",
-              sku: "SHORTS-S",
-              options: {
-                Size: "S",
-              },
-              prices: [
-                {
-                  amount: 10,
-                  currency_code: "eur",
-                },
-                {
-                  amount: 15,
-                  currency_code: "usd",
-                },
-              ],
-            },
-            {
-              title: "M",
-              sku: "SHORTS-M",
-              options: {
-                Size: "M",
-              },
-              prices: [
-                {
-                  amount: 10,
-                  currency_code: "eur",
-                },
-                {
-                  amount: 15,
-                  currency_code: "usd",
-                },
-              ],
-            },
-            {
-              title: "L",
-              sku: "SHORTS-L",
-              options: {
-                Size: "L",
-              },
-              prices: [
-                {
-                  amount: 10,
-                  currency_code: "eur",
-                },
-                {
-                  amount: 15,
-                  currency_code: "usd",
-                },
-              ],
-            },
-            {
-              title: "XL",
-              sku: "SHORTS-XL",
-              options: {
-                Size: "XL",
-              },
-              prices: [
-                {
-                  amount: 10,
-                  currency_code: "eur",
-                },
-                {
-                  amount: 15,
-                  currency_code: "usd",
-                },
-              ],
-            },
-          ],
-          sales_channels: [
-            {
-              id: defaultSalesChannel[0].id,
-            },
-          ],
+          sales_channels: [{ id: defaultSalesChannel[0].id }],
         },
       ],
     },

@@ -21,8 +21,56 @@ module.exports = defineConfig({
   },
 
   modules: [
+    {
+      resolve: "@medusajs/medusa/payment",
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/payment-stripe",
+            id: "stripe",
+            options: {
+              apiKey: process.env.STRIPE_API_KEY,
+              webhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
+            },
+          },
+        ],
+      },
+    },
     { resolve: "./src/modules/brand" },
+    { resolve: "./src/modules/emailTemplate" },
     { resolve: "./src/modules/meta_pixel" },
+    { resolve: "./src/modules/collectionMedia" },
+    {
+      resolve: "@medusajs/medusa/translation",
+    },
+    {
+      resolve: "@medusajs/medusa/notification",
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/medusa/notification-local",
+            id: "local",
+            options: {
+              name: "Local Notification Provider",
+              channels: ["feed"],
+            },
+          },
+          {
+            resolve: "./src/modules/nodemailer-notification",
+            id: "nodemailer",
+            options: {
+              channels: ["email"],
+              host: process.env.SMTP_HOST,
+              port: parseInt(process.env.SMTP_PORT ?? "587"),
+              secure: process.env.SMTP_SECURE === "true",
+              user: process.env.SMTP_USER,
+              pass: process.env.SMTP_PASS,
+              from: process.env.SMTP_FROM,
+            },
+          },
+        ],
+      },
+    },
   ],
 
   admin: {
@@ -55,5 +103,8 @@ module.exports = defineConfig({
         },
       };
     },
+  },
+  featureFlags: {
+    translation: true,
   },
 });
