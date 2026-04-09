@@ -52,7 +52,7 @@ const TEMPLATE_DEFINITIONS = [
     key: "customer-welcome",
     name: "Customer Welcome",
     description: "Sent when a new customer registers",
-    variables: ["first_name"],
+    variables: ["first_name", "last_name", "full_name", "email", "phone", "customer_id"],
   },
   {
     key: "password-reset",

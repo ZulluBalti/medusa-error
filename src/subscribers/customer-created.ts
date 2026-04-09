@@ -1,5 +1,6 @@
 import { Modules } from "@medusajs/framework/utils"
 import { SubscriberArgs, type SubscriberConfig } from "@medusajs/framework"
+import { resolveEmailTemplate } from "./utils/resolve-email-template"
 
 export default async function customerCreatedHandler({
   event: { data },
@@ -15,7 +16,7 @@ export default async function customerCreatedHandler({
 
     const { data: customers } = await query.graph({
       entity: "customer",
-      fields: ["id", "email", "first_name", "last_name"],
+      fields: ["id", "email", "first_name", "last_name", "phone"],
       filters: { id: data.id },
     })
 
@@ -30,14 +31,21 @@ export default async function customerCreatedHandler({
       return
     }
 
+    const templateData = {
+      first_name: customer.first_name,
+      last_name: customer.last_name,
+      full_name: [customer.first_name, customer.last_name].filter(Boolean).join(" ") || "there",
+      email: customer.email,
+      phone: customer.phone,
+      customer_id: customer.id,
+    }
+    const { template: emailTemplate, data: emailData } = await resolveEmailTemplate(container, "customer-welcome", templateData)
+
     await notificationService.createNotifications({
       to: customer.email,
       channel: "email",
-      template: "customer-welcome",
-      data: {
-        first_name: customer.first_name,
-        last_name: customer.last_name,
-      },
+      template: emailTemplate,
+      data: emailData,
     })
 
     logger.info(`Welcome email sent to ${customer.email}`)
