@@ -37,6 +37,7 @@ module.exports = defineConfig({
       },
     },
     { resolve: "./src/modules/brand" },
+    { resolve: "./src/modules/orderTag" },
     { resolve: "./src/modules/emailTemplate" },
     { resolve: "./src/modules/meta_pixel" },
     { resolve: "./src/modules/collectionMedia" },

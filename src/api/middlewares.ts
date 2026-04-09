@@ -13,6 +13,7 @@ import { PostAdminCreateCategoryImage } from "./admin/product-categories/[id]/im
 import { z } from "zod";
 import { createFindParams } from "@medusajs/medusa/api/utils/validators";
 import { PostAdminCreateMetaPixel } from "./admin/meta-pixels/validators";
+import { AddOrderTagSchema } from "./admin/orders/[id]/tags/validators";
 import { PostAdminUpdateMetaPixelStatus } from "./admin/meta-pixels/[id]/toggle/validators";
 import { META_PIXEL_FIELDS } from "./admin/meta-pixels/fields";
 
@@ -84,6 +85,11 @@ export default defineMiddlewares({
       matcher: "/admin/meta-pixels/:id",
       method: "DELETE",
       middlewares: [],
+    },
+    {
+      matcher: "/admin/orders/:id/tags",
+      method: "POST",
+      middlewares: [validateAndTransformBody(AddOrderTagSchema)],
     },
     {
       matcher: "/admin/products",
