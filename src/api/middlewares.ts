@@ -92,6 +92,11 @@ export default defineMiddlewares({
       middlewares: [validateAndTransformBody(AddOrderTagSchema)],
     },
     {
+      matcher: "/admin/products/:id/pre-order",
+      method: "POST",
+      middlewares: [validateAndTransformBody(z.object({ enabled: z.boolean() }))],
+    },
+    {
       matcher: "/admin/products",
       method: ["POST"],
       additionalDataValidator: {
