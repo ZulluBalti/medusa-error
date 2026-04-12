@@ -115,6 +115,8 @@ class NodemailerNotificationProviderService extends AbstractNotificationProvider
         return this.passwordResetTemplate(data)
       case "admin-invite":
         return this.adminInviteTemplate(data)
+      case "abandoned-cart":
+        return this.abandonedCartTemplate(data)
       default:
         return {
           subject: `Notification: ${template}`,
@@ -284,6 +286,40 @@ class NodemailerNotificationProviderService extends AbstractNotificationProvider
         <p>This link expires in 24 hours.</p>
       `,
       text: `Admin Invitation\n\nAccept your invitation here: ${inviteUrl}\n\nThis link expires in 24 hours.`,
+    }
+  }
+
+  private abandonedCartTemplate(data: Record<string, unknown>) {
+    const customerName = data.customer_name ?? "there"
+    const total = data.total ?? "0.00"
+    const currency = data.currency ?? "USD"
+    const items: Record<string, unknown>[] = Array.isArray(data.items) ? data.items : []
+
+    const itemsHtml = items
+      .map(
+        (item) =>
+          `<tr>
+            <td>${item.title ?? "Item"}</td>
+            <td>${item.quantity}</td>
+            <td>${item.unit_price} ${currency}</td>
+          </tr>`
+      )
+      .join("")
+
+    const itemsText = items
+      .map((item) => `- ${item.title ?? "Item"} x${item.quantity} @ ${item.unit_price} ${currency}`)
+      .join("\n")
+
+    return {
+      subject: "You left something behind!",
+      html: `
+        <h1>Did you forget something?</h1>
+        <p>Hi ${customerName}, you left some items in your cart.</p>
+        ${itemsHtml ? `<table border="1" cellpadding="8" cellspacing="0"><thead><tr><th>Item</th><th>Qty</th><th>Price</th></tr></thead><tbody>${itemsHtml}</tbody></table>` : ""}
+        <p><strong>Cart Total: ${total} ${currency}</strong></p>
+        <p>Come back and complete your order before it's gone!</p>
+      `,
+      text: `Hi ${customerName}, you left some items in your cart.\n\n${itemsText}\n\nCart Total: ${total} ${currency}. Come back and complete your order!`,
     }
   }
 }

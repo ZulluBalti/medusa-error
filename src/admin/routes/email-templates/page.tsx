@@ -47,6 +47,13 @@ const TEMPLATE_DEFINITIONS = [
     variables: ["customer_name", "display_id", "total", "currency"],
   },
   {
+    category: "Orders",
+    key: "abandoned-cart",
+    name: "Abandoned Cart",
+    description: "Sent when a customer leaves items in their cart",
+    variables: ["customer_name", "total", "currency", "items_count", "items.title", "items.quantity", "items.unit_price"],
+  },
+  {
     category: "Customer Account",
     key: "customer-welcome",
     name: "Customer Welcome",

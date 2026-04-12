@@ -48,8 +48,33 @@ export async function resolveEmailTemplate(
 }
 
 function interpolate(template: string, data: Record<string, unknown>): string {
-  return template.replace(/\{\{(\w+)\}\}/g, (_, key) => {
+  // Handle {{#each <key>}}...{{/each}} blocks
+  const eachPattern = /\{\{#each (\w+)\}\}([\s\S]*?)\{\{\/each\}\}/g
+  let result = template.replace(eachPattern, (_, key, block) => {
+    const list = data[key]
+    if (!Array.isArray(list)) return ""
+    return list
+      .map((item: Record<string, unknown>) => {
+        // Replace {{../key}} with parent context values
+        let rendered = block.replace(/\{\{\.\.\/(\w+)\}\}/g, (_: string, parentKey: string) => {
+          const value = data[parentKey]
+          return value !== undefined ? String(value) : `{{../${parentKey}}}`
+        })
+        // Replace {{key}} with item values
+        rendered = rendered.replace(/\{\{(\w+)\}\}/g, (_: string, itemKey: string) => {
+          const value = item[itemKey]
+          return value !== undefined ? String(value) : `{{${itemKey}}}`
+        })
+        return rendered
+      })
+      .join("")
+  })
+
+  // Handle remaining simple {{key}} variables
+  result = result.replace(/\{\{(\w+)\}\}/g, (_, key) => {
     const value = data[key]
     return value !== undefined ? String(value) : `{{${key}}}`
   })
+
+  return result
 }
