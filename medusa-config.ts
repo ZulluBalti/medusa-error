@@ -42,6 +42,7 @@ module.exports = defineConfig({
     { resolve: "./src/modules/emailTemplate" },
     { resolve: "./src/modules/meta_pixel" },
     { resolve: "./src/modules/collectionMedia" },
+    { resolve: "./src/modules/productSpec" },
     {
       resolve: "@medusajs/medusa/translation",
     },
