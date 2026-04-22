@@ -43,6 +43,7 @@ module.exports = defineConfig({
     { resolve: "./src/modules/meta_pixel" },
     { resolve: "./src/modules/collectionMedia" },
     { resolve: "./src/modules/productSpec" },
+    { resolve: "./src/modules/blog" },
     {
       resolve: "@medusajs/medusa/translation",
     },

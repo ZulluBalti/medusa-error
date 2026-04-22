@@ -16,6 +16,10 @@ import { PostAdminCreateMetaPixel } from "./admin/meta-pixels/validators";
 import { AddOrderTagSchema } from "./admin/orders/[id]/tags/validators";
 import { PostAdminUpdateMetaPixelStatus } from "./admin/meta-pixels/[id]/toggle/validators";
 import { META_PIXEL_FIELDS } from "./admin/meta-pixels/fields";
+import {
+  PostAdminCreateBlogPost,
+  PostAdminUpdateBlogPost,
+} from "./admin/blog/validators";
 
 export const GetSchema = createFindParams();
 
@@ -102,6 +106,26 @@ export default defineMiddlewares({
       additionalDataValidator: {
         brand_id: z.string().optional(),
       },
+    },
+    {
+      matcher: "/admin/blog",
+      method: "GET",
+      middlewares: [
+        validateAndTransformQuery(GetSchema, {
+          defaults: ["id", "title", "slug", "excerpt", "cover_image", "status", "author", "published_at", "created_at"],
+          isList: true,
+        }),
+      ],
+    },
+    {
+      matcher: "/admin/blog",
+      method: "POST",
+      middlewares: [validateAndTransformBody(PostAdminCreateBlogPost)],
+    },
+    {
+      matcher: "/admin/blog/:id",
+      method: "POST",
+      middlewares: [validateAndTransformBody(PostAdminUpdateBlogPost)],
     },
   ],
 });
