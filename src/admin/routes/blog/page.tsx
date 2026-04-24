@@ -379,6 +379,10 @@ const EditBlogPostModal = ({
 const columnHelper = createDataTableColumnHelper<BlogPost>()
 
 const BlogPage = () => {
+  useEffect(() => {
+    document.title = "Blog Posts | Admin"
+  }, [])
+
   const [pagination, setPagination] = useState<DataTablePaginationState>({
     pageSize: 15,
     pageIndex: 0,

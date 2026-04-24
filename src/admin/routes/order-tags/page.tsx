@@ -2,7 +2,7 @@ import { defineRouteConfig } from "@medusajs/admin-sdk"
 import { Tag } from "@medusajs/icons"
 import { Badge, Button, Container, Heading, Select, Text } from "@medusajs/ui"
 import { useQuery } from "@tanstack/react-query"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import { sdk } from "../../lib/sdk"
 
@@ -17,6 +17,10 @@ type Order = {
 }
 
 const OrderTagsPage = () => {
+  useEffect(() => {
+    document.title = "Orders by Tag | Admin"
+  }, [])
+
   const [selectedTag, setSelectedTag] = useState<string>("")
 
   const { data: tagsData, isLoading: tagsLoading } = useQuery({

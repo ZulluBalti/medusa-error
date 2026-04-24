@@ -3,7 +3,7 @@ import { TagSolid } from "@medusajs/icons";
 import { Container } from "@medusajs/ui";
 import { useQuery } from "@tanstack/react-query";
 import { sdk } from "../../lib/sdk";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   // ...
   Heading,
@@ -37,6 +37,10 @@ const columns = [
 ];
 
 const BrandsPage = () => {
+  useEffect(() => {
+    document.title = "Brands | Admin"
+  }, [])
+
   const limit = 15;
   const [pagination, setPagination] = useState<DataTablePaginationState>({
     pageSize: limit,

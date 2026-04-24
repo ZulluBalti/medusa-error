@@ -1,7 +1,33 @@
 import { loadEnv, defineConfig } from "@medusajs/framework/utils";
+import fs from "fs";
 import path from "path";
 
 loadEnv(process.env.NODE_ENV || "development", process.cwd());
+
+const getAdminFaviconDataUri = (appRoot: string) => {
+  const faviconPath = path.join(appRoot, "src", "admin", "assets", "storefront-favicon.svg");
+
+  try {
+    const svg = fs.readFileSync(faviconPath, "utf8").trim();
+    return `data:image/svg+xml,${encodeURIComponent(svg)}`;
+  } catch {
+    return null;
+  }
+};
+
+const injectAdminFavicon = (html: string, href: string) => {
+  const faviconLink = `<link rel="icon" type="image/svg+xml" href="${href}" />`;
+
+  if (html.includes("data-placeholder-favicon")) {
+    return html.replace(/<link[^>]*data-placeholder-favicon[^>]*>/i, faviconLink);
+  }
+
+  if (html.includes('rel="icon"')) {
+    return html.replace(/<link[^>]*rel="icon"[^>]*>/i, faviconLink);
+  }
+
+  return html.replace("</head>", `    ${faviconLink}\n    </head>`);
+};
 
 module.exports = defineConfig({
   projectConfig: {
@@ -79,14 +105,18 @@ module.exports = defineConfig({
 
   admin: {
     vite: () => {
-      // only override in dev
-      if (process.env.NODE_ENV !== "development") {
-        return {};
-      }
-
       const appRoot = process.cwd(); // /app in your container
+      const isDevelopment = process.env.NODE_ENV === "development"
+      const faviconDataUri = getAdminFaviconDataUri(appRoot)
 
       return {
+        plugins: [
+          {
+            name: "admin-shared-favicon",
+            transformIndexHtml: (html: string) =>
+              faviconDataUri ? injectAdminFavicon(html, faviconDataUri) : html,
+          },
+        ],
         // If you still have /src resolution issues, keep this:
         resolve: {
           alias: {
@@ -94,17 +124,21 @@ module.exports = defineConfig({
           },
         },
 
-        server: {
-          host: "0.0.0.0",
-          allowedHosts: ["localhost", ".localhost", "127.0.0.1"],
-          fs: {
-            allow: [appRoot],
-          },
-          hmr: {
-            port: 5173,
-            clientPort: 5173,
-          },
-        },
+        ...(isDevelopment
+          ? {
+              server: {
+                host: "0.0.0.0",
+                allowedHosts: ["localhost", ".localhost", "127.0.0.1"],
+                fs: {
+                  allow: [appRoot],
+                },
+                hmr: {
+                  port: 5173,
+                  clientPort: 5173,
+                },
+              },
+            }
+          : {}),
       };
     },
   },

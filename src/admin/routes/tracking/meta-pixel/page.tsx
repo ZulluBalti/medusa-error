@@ -15,7 +15,7 @@ import {
 } from "@medusajs/ui";
 import { EllipsisHorizontal } from "@medusajs/icons";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { sdk } from "../../../lib/sdk";
 import { CreateMetaPixelForm } from "../../../components/CreateMetaPixelForm";
 import { EditMetaPixelForm } from "../../../components/EditMetaPixelForm";
@@ -42,6 +42,10 @@ const columnHelper = createDataTableColumnHelper<MetaPixel>();
 const limit = 15;
 
 const MetaPixelPage = () => {
+  useEffect(() => {
+    document.title = "Meta Pixels | Admin"
+  }, [])
+
   const queryClient = useQueryClient();
 
   const [pagination, setPagination] = useState<DataTablePaginationState>({

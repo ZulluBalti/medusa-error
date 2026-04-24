@@ -13,7 +13,7 @@ import {
   toast,
 } from "@medusajs/ui"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { sdk } from "../../lib/sdk"
 
 // Known templates with their display names and available variables
@@ -95,6 +95,10 @@ type FormState = {
 }
 
 export default function EmailTemplatesPage() {
+  useEffect(() => {
+    document.title = "Email Templates | Admin"
+  }, [])
+
   const queryClient = useQueryClient()
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [activeDefinition, setActiveDefinition] = useState<

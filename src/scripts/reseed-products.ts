@@ -49,7 +49,7 @@ export default async function reseedProducts({ container }: ExecArgs) {
     fields: ["id"],
   })
   if (existingCollections.length) {
-    await (productModuleService as any).deleteCollections(
+    await productModuleService.deleteProductCollections(
       existingCollections.map((c) => c.id)
     )
     logger.info(`Deleted ${existingCollections.length} existing collections.`)
