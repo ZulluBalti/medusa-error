@@ -8,7 +8,10 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
 
   const [categories] = await categoryService.listAndCountProductCategories(
     { parent_category_id: null, is_active: true },
-    { select: ["id", "name", "handle", "description", "rank"] }
+    {
+      select: ["id", "name", "handle", "description", "rank"],
+      order: { rank: "ASC" },
+    }
   )
 
   const categoryIds = categories.map((c) => c.id)
