@@ -1,20 +1,25 @@
-import { MedusaRequest, MedusaResponse } from "@medusajs/framework"
-import { Modules } from "@medusajs/framework/utils"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework";
+import { Modules } from "@medusajs/framework/utils";
 
-const ADMIN_EMAIL = process.env.CONTACT_ADMIN_EMAIL ?? "info@kupkompa.cz"
+const ADMIN_EMAIL = process.env.CONTACT_ADMIN_EMAIL ?? "info@kupkompa.cz";
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
-  const { name, email, phone, subject, message } = req.body as Record<string, string>
+  const { name, email, phone, subject, message } = req.body as Record<
+    string,
+    string
+  >;
 
   if (!name || !email || !message) {
-    return res.status(400).json({ error: "Name, email and message are required." })
+    return res
+      .status(400)
+      .json({ error: "Name, email and message are required." });
   }
 
-  const notificationModule = req.scope.resolve(Modules.NOTIFICATION)
+  const notificationModule = req.scope.resolve(Modules.NOTIFICATION);
 
   const subjectLine = subject
     ? `Nový kontaktní formulář: ${subject}`
-    : `Nový kontaktní formulář od ${name}`
+    : `Nový kontaktní formulář od ${name}`;
 
   const html_body = `
     <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
@@ -28,11 +33,11 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
       <div style="background: #f4f4f4; border-left: 4px solid #22c55e; padding: 16px; border-radius: 4px;">
         <p style="margin: 0; white-space: pre-wrap;">${message}</p>
       </div>
-      <p style="color: #999; font-size: 12px; margin-top: 24px;">Odesláno z kupkompa.cz</p>
+      <p style="color: #999; font-size: 12px; margin-top: 24px;">Odesláno z marketing4g.cz</p>
     </div>
-  `
+  `;
 
-  const text_body = `Nová zpráva z kontaktního formuláře\n\nJméno: ${name}\nE-mail: ${email}${phone ? `\nTelefon: ${phone}` : ""}${subject ? `\nPředmět: ${subject}` : ""}\n\nZpráva:\n${message}`
+  const text_body = `Nová zpráva z kontaktního formuláře\n\nJméno: ${name}\nE-mail: ${email}${phone ? `\nTelefon: ${phone}` : ""}${subject ? `\nPředmět: ${subject}` : ""}\n\nZpráva:\n${message}`;
 
   await notificationModule.createNotifications({
     to: ADMIN_EMAIL,
@@ -43,7 +48,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
       html_body,
       text_body,
     },
-  })
+  });
 
-  return res.status(200).json({ success: true })
+  return res.status(200).json({ success: true });
 }
