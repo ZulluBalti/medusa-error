@@ -25,10 +25,10 @@
     "predeploy": "medusa db:migrate"
   },
   "dependencies": {
-    "@medusajs/admin-sdk": "2.12.3",
-    "@medusajs/cli": "2.12.3",
-    "@medusajs/framework": "2.12.3",
-    "@medusajs/medusa": "2.12.3",
+    "@medusajs/admin-sdk": "2.13.6",
+    "@medusajs/cli": "2.13.6",
+    "@medusajs/framework": "2.13.6",
+    "@medusajs/medusa": "2.13.6",
     "@medusajs/payment-stripe": "^2.13.5",
     "@tiptap/extension-color": "^3.22.4",
     "@tiptap/extension-highlight": "^3.22.4",
